@@ -1,0 +1,48 @@
+pipeline AirportsPipeline {
+	AirportsHttpExtractor
+    -> AirportsTextFileInterpreter;
+
+	AirportsTextFileInterpreter
+        -> AirportsCSVInterpreter
+		-> AirportsTableInterpreter
+		-> AirportsLoader;
+
+	// Interpret the HttpExtractor output (it requires no input) e.g., as text file.
+	block AirportsTextFileInterpreter oftype TextFileInterpreter { }
+
+	block AirportsHttpExtractor oftype HttpExtractor {
+    	// Extract the CSV file from the following URL
+		url: "https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-flughafen-weltweit/exports/csv?lang=en&timezone=Europe%2FBerlin&use_labels=true&delimiter=%3B";
+	}
+
+	block AirportsCSVInterpreter oftype CSVInterpreter {
+    delimiter: ";"; // dataset uses semicolon as delimiter
+	}
+
+	block AirportsTableInterpreter oftype TableInterpreter {
+		header: true;
+		columns: [
+		"Lfd. Nummer" oftype decimal,
+		"Name des Flughafens" oftype text,
+		"Ort" oftype text,
+		"Land" oftype text,
+		"IATA" oftype text,
+		"ICAO" oftype text,
+		"Latitude" oftype decimal,
+		"Longitude" oftype decimal,
+		"Altitude" oftype decimal,
+		// Columns ["Zeitzone", "DST", "Zeitzonen-Datenbank", "geo_punkt"] are not included in the dataset
+		];
+	}
+
+	// Finally, the interpreted table is written into a SQLite database.
+	block AirportsLoader oftype SQLiteLoader {
+		table: "airports";
+		file: "./airports.sqlite";
+	}
+
+}
+
+
+// output sqlite database is viewed through (just to make sure it works :D): https://inloop.github.io/sqlite-viewer/
+
