@@ -44,5 +44,3 @@ pipeline AirportsPipeline {
 }
 
 
-// output sqlite database is viewed through (just to make sure it works :D): https://inloop.github.io/sqlite-viewer/
-
