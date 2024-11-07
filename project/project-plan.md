@@ -136,6 +136,17 @@ The metadata URL is shared across all sheets.
 * Sheet Description: Number of people requiring treatment and care for any neglected tropical diseases (NTDs)
 
 
+### Datasource 2: World Bank Group
+* Description: The World Bank is an international financial institution that provides loans and grants to the governments of low- and middle-income countries for the purposes of economic development.
+* License Copyright: [Creative Commons Attribution 4.0 International license (CC-BY 4.0)](https://datacatalog.worldbank.org/public-licenses)
+
+
+#### Sheet 1
+* Meta URL: https://data.worldbank.org/indicator/SP.DYN.LE00.IN?locations=BR
+* Data URL: https://api.worldbank.org/v2/en/indicator/SP.DYN.LE00.IN?downloadformat=csv
+* Data Type: CSV
+* Data Information: Life expectancy at birth
+* Sheet Description: Number of people requiring treatment and care for any neglected tropical diseases (NTDs)
 
 
 
