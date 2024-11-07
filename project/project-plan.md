@@ -146,7 +146,6 @@ The metadata URL is shared across all sheets.
 * Data URL: https://api.worldbank.org/v2/en/indicator/SP.DYN.LE00.IN?downloadformat=csv
 * Data Type: CSV
 * Data Information: Life expectancy at birth
-* Sheet Description: Number of people requiring treatment and care for any neglected tropical diseases (NTDs)
 
 
 
