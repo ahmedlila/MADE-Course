@@ -38,10 +38,12 @@ def download_world_bank_data(url: str, specific_file: str, output_dir: str) -> p
         zip_ref.extract(specific_file, output_dir)
         original_path = os.path.join(output_dir, specific_file)
         renamed_path = os.path.join(output_dir, "life_expectancy_wb.csv")
-        if os.path.exists(renamed_path):
-            os.remove(renamed_path)
         os.rename(original_path, renamed_path)
-    return pd.read_csv(renamed_path, delimiter=',', engine='python', skiprows=3)
+        df = pd.read_csv(renamed_path, delimiter=',', engine='python', skiprows=3)
+        os.remove(renamed_path)
+        return df
+
+
 def process_world_bank_data(df: pd.DataFrame, country: str) -> pd.DataFrame:
     """
     Processes the World Bank data for a specific country.
