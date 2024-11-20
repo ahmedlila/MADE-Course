@@ -1,0 +1,85 @@
+pipeline GraphsPipeline {
+
+    GraphsHttpExtractor
+        -> GraphsXLSXInterpreter
+        -> GraphsSheetPicker
+        -> GraphsCellWriter
+        -> GraphsSelector
+        -> gdpPerCapitaTableInterpreter
+        -> gdpPerCapitaLoader;
+    
+    GraphsSelector  
+        -> bondIssuanceTableInterpreter
+        -> bondIssuanceLoader;
+
+    block GraphsHttpExtractor oftype HttpExtractor {
+        url: "https://thedocs.worldbank.org/en/doc/7d852628d96b9411d43e5d36d5dff941-0050062022/original/Graphs-Chapter-5-02082022.xlsx";
+        retries: 4;
+    }
+
+    block GraphsXLSXInterpreter oftype XLSXInterpreter { }
+
+    block GraphsSheetPicker oftype SheetPicker {
+        sheetName: 'Figure S5.1.2';
+    }
+
+    block GraphsSelector oftype CellRangeSelector {
+        select: range P2:S45;
+    }
+
+    block GraphsCellWriter oftype CellWriter {
+        at: range P2:S2;  
+        write: ["Country Code", "Economy", "GDP per Capita", "Bond Issuance Share"];
+    }
+
+    ///////////// Validators /////////////
+    valuetype CountryCodeValidator oftype text {
+        constraints: [CountryCodeConstraint];
+    }
+
+    valuetype GDPPerCapitaValidator oftype decimal {
+        constraints: [PositiveDecimalConstraint];
+    }
+
+    valuetype BondIssuanceShareValidator oftype decimal {
+        constraints: [DecimalWithinRangeConstraint];
+    }
+    
+    ///////////// Constraints /////////////
+    constraint CountryCodeConstraint on CountryCodeValidator:
+        value matches /^[A-Z]{3}$/;
+
+    constraint PositiveDecimalConstraint on GDPPerCapitaValidator:
+        value > 0;
+
+    constraint DecimalWithinRangeConstraint on BondIssuanceShareValidator:
+        value >= 0 and value <= 1;
+    
+    ///////////// Tables /////////////
+    block gdpPerCapitaTableInterpreter oftype TableInterpreter {
+        header: true;
+        columns: [
+            "Country Code" oftype CountryCodeValidator,
+            "GDP per Capita" oftype GDPPerCapitaValidator
+        ];
+    }
+
+    block bondIssuanceTableInterpreter oftype TableInterpreter {
+        header: true;
+        columns: [
+            "Country Code" oftype CountryCodeValidator,
+            "Bond Issuance Share" oftype BondIssuanceShareValidator
+        ];
+    }
+
+    ///////////// Storing Tables /////////////
+    block gdpPerCapitaLoader oftype SQLiteLoader {
+        table: "gdpPerCapita";
+        file: "./country-stats.sqlite";
+    }
+
+    block bondIssuanceLoader oftype SQLiteLoader {
+        table: "bondIssuance";
+        file: "./country-stats.sqlite";
+    }
+}
