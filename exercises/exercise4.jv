@@ -32,13 +32,12 @@ pipeline TemperaturesPipeline {
 
 
     block TemperaturesCellWriter oftype CellWriter {
-        at: range A1:F1;  
+        at: range A1:E1;  
         write: ["id",
                 "producer",
                 "model",
                 "month",
-                "temperature",
-                "battery_temperature"];
+                "temperature"];
     }
 
     // I tried to delete the in-between cols but it didn't work
@@ -68,6 +67,14 @@ pipeline TemperaturesPipeline {
         outputColumn: "battery_temperature";
         uses: CelsuisToFahrenheit;
     }
+
+    // Constraint for Positive Integer for `id` variable
+    valuetype PostiveInteger oftype integer {
+        constraints: [PositiveIntegerConstraint];
+    }
+	
+    constraint PositiveIntegerConstraint on integer:
+        value > 0;
 
     // Validation 
     block DataValidation oftype TableInterpreter {
