@@ -69,19 +69,11 @@ pipeline TemperaturesPipeline {
         uses: CelsuisToFahrenheit;
     }
 
-    // Constraint for Positive Integer for `id` variable
-    valuetype PostiveInteger oftype integer {
-        constraints: [PositiveIntegerConstraint];
-    }
-	
-    constraint PositiveIntegerConstraint on integer:
-        value > 0;
-
     // Validation 
     block DataValidation oftype TableInterpreter {
         header: true;
         columns: [
-            "id" oftype PostiveInteger,
+            "id" oftype integer,
             "producer" oftype text,
             "model" oftype text,
             "month" oftype integer,
