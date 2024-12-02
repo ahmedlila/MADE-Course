@@ -49,10 +49,10 @@ pipeline TemperaturesPipeline {
 
     //  C to F 
     transform CelsuisToFahrenheit {
-        from tempCelsius oftype decimal;
-        to tempFahrenheit oftype decimal;
+        from TemperatureInCelsius oftype decimal;
+        to TemperatureInFahrenheit oftype decimal;
 
-        tempFahrenheit: tempCelsius * 9/5 + 32;
+        TemperatureInFahrenheit: (TemperatureInCelsius * 9/5) + 32 ;
     }
 
     // Apply transformation
