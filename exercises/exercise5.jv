@@ -24,6 +24,7 @@ pipeline StopsPipeline {
 
     block StopsCSVInterpreter oftype CSVInterpreter {
         delimiter: ","; // dataset uses semicolon as delimiter
+        enclosing:'"'; // dataset uses double quotes as enclosing
 	}
 
     constraint ZoneConstraint on integer:
@@ -33,11 +34,11 @@ pipeline StopsPipeline {
         value >=-90 and value <=90;
 
     valuetype Zone oftype integer{
-        constraints:[ZoneConstraint];
+        constraints:[ZoneConstraint,];
     }
 
     valuetype GeoCoordinates oftype decimal{
-        constraints:[GeoCoordinatesConstraint];
+        constraints:[GeoCoordinatesConstraint,];
     }
 
     block StopsDataValidation oftype TableInterpreter{
