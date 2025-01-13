@@ -16,7 +16,7 @@ data_files = {
 }
 
 world_bank_url = "https://api.worldbank.org/v2/en/indicator/SP.DYN.LE00.IN?downloadformat=csv"
-specific_file = 'API_SP.DYN.LE00.IN_DS2_en_csv_v2_99.csv'
+specific_file = 'API_SP.DYN.LE00.IN_DS2_en_csv_v2_87.csv'
 UNNECESSARY_COLS = ["IND_ID", "IND_CODE", "IND_UUID", "IND_PER_CODE", "DIM_TIME_TYPE", "DIM_GEO_CODE_M49", "DIM_GEO_CODE_TYPE", "DIM_PUBLISH_STATE_CODE"]
 SHEETS_ABBREVIATIONS  = ['LIFE_EXPECTANCY','HYPERTENSION', 'UHC', 'DTP3', 'MVC2']
 output_dir = "data/"
